@@ -109,7 +109,7 @@
         <option value="Final">Final</option>
       </select>
 
-      <select id="filetype">
+      <select id="filetype" onchange="updateCourses()">
         <option value="">-- Select File Type --</option>
         <option value="Notes">Notes</option>
         <option value="CourseMaterials">Course Materials</option>
@@ -143,11 +143,21 @@
     async function updateCourses() {
       const semester = document.getElementById("semester").value;
       const exam = document.getElementById("exam").value;
+      const filetype = document.getElementById("filetype").value;
       const courseSelect = document.getElementById("course");
       courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
 
-      if (!semester || !exam) return;
+      if (!semester || !exam || !filetype) return;
 
+      if (filetype === "PreviousQuestions") {
+        const opt = document.createElement("option");
+        opt.value = "PreviousQuestions";
+        opt.textContent = "Previous Questions";
+        courseSelect.appendChild(opt);
+        return;
+      }
+
+      // For Notes and CourseMaterials
       const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/${exam}`;
       try {
         const res = await fetch(apiUrl);
@@ -182,7 +192,12 @@
         return;
       }
 
-      const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/${exam}/${course}/${filetype}`;
+      let apiUrl;
+      if (filetype === "PreviousQuestions") {
+        apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/PreviousQuestions/${exam}`;
+      } else {
+        apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/${exam}/${course}/${filetype}`;
+      }
 
       try {
         const res = await fetch(apiUrl);
