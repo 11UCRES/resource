@@ -6,134 +6,557 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f2f4f8;
-      margin: 0;
-      padding: 20px;
+    :root {
+      --primary-color: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary-color: #f3f4f6;
+      --accent-color: #10b981;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --border-color: #e5e7eb;
+      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    h2 {
-      color: #333;
+    [data-theme="dark"] {
+      --primary-color: #818cf8;
+      --primary-hover: #6366f1;
+      --secondary-color: #374151;
+      --accent-color: #34d399;
+      --text-primary: #f9fafb;
+      --text-secondary: #d1d5db;
+      --bg-primary: #1f2937;
+      --bg-secondary: #111827;
+      --bg-tertiary: #374151;
+      --border-color: #4b5563;
+      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 20px;
+      transition: var(--transition);
+      line-height: 1.6;
+    }
+
+    .header {
       text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      text-shadow: var(--shadow-light);
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: 50px;
+      padding: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-light);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 80px;
+      justify-content: center;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-medium);
+      border-color: var(--primary-color);
+    }
+
+    .theme-icon {
+      font-size: 1.2rem;
+      transition: var(--transition);
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      background: var(--bg-primary);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: var(--shadow-heavy);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border-radius: 20px 20px 0 0;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::before {
+      content: '📚';
+      font-size: 1.2rem;
     }
 
     .selectors {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    select, button {
-      flex: 1 1 45%;
-      padding: 12px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper::after {
+      content: '▼';
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      transition: var(--transition);
+    }
+
+    .select-wrapper:hover::after {
+      color: var(--primary-color);
+    }
+
+    select {
+      width: 100%;
+      padding: 1rem 2.5rem 1rem 1rem;
+      font-size: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+      appearance: none;
+      font-weight: 500;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      transform: translateY(-2px);
+    }
+
+    select:hover {
+      border-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
     }
 
     button {
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
       border: none;
-      transition: background-color 0.3s ease;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+      color: white;
+      box-shadow: var(--shadow-medium);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 2px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent-color), #059669);
+      color: white;
+    }
+
+    .btn-accent:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-heavy);
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.6s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    button:active::before {
+      width: 300px;
+      height: 300px;
     }
 
     #files {
-      margin-top: 30px;
+      margin-top: 2rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    #files h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #files h3::before {
+      content: '📁';
     }
 
     #files label {
-      display: block;
-      margin: 10px 0;
-      background: #eef6ff;
-      padding: 10px;
-      border-radius: 6px;
-    }
-
-    .action-buttons {
-      margin-top: 20px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: space-between;
+      align-items: center;
+      margin: 0.75rem 0;
+      padding: 1rem;
+      background: var(--bg-primary);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid var(--border-color);
+      font-weight: 500;
     }
 
-    @media (max-width: 600px) {
-      .selectors, .action-buttons {
+    #files label:hover {
+      background: var(--bg-tertiary);
+      transform: translateX(5px);
+      box-shadow: var(--shadow-light);
+    }
+
+    #files input[type="checkbox"] {
+      margin-right: 1rem;
+      width: 20px;
+      height: 20px;
+      accent-color: var(--primary-color);
+      cursor: pointer;
+    }
+
+    #telegramSection {
+      background: var(--bg-secondary);
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      margin-top: 2rem;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+
+      .header h2 {
+        font-size: 2rem;
+      }
+
+      .selectors {
+        grid-template-columns: 1fr;
+      }
+
+      .button-group {
         flex-direction: column;
       }
 
-      select, button {
-        flex: 1 1 100%;
+      button {
+        min-width: auto;
+      }
+
+      .theme-toggle {
+        position: static;
+        margin: 1rem auto 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h2 {
+        font-size: 1.8rem;
+      }
+
+      .container {
+        padding: 1rem;
       }
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
+  <div class="header">
     <h2>University Resource Finder</h2>
+    <p>Find your academic materials quickly and efficiently</p>
+    <div class="theme-toggle" onclick="themeManager.toggle()">
+      <span class="theme-icon" id="themeIcon">🌙</span>
+    </div>
+  </div>
+
+  <div class="container fade-in">
+    <div class="section-title">Select Your Preferences</div>
 
     <div class="selectors">
-      <select id="semester" onchange="updateCourses()">
-        <option value="">-- Select Semester --</option>
-        <option value="Semester1">Semester 1</option>
-        <option value="Semester2">Semester 2</option>
-        <option value="Semester3">Semester 3</option>
-        <option value="Semester4">Semester 4</option>
-        <option value="Semester5">Semester 5</option>
-        <option value="Semester6">Semester 6</option>
-        <option value="Semester7">Semester 7</option>
-        <option value="Semester8">Semester 8</option>
-      </select>
+      <div class="select-wrapper">
+        <select id="semester" onchange="updateCourses()">
+          <option value="">-- Select Semester --</option>
+          <option value="Semester1">Semester 1</option>
+          <option value="Semester2">Semester 2</option>
+          <option value="Semester3">Semester 3</option>
+          <option value="Semester4">Semester 4</option>
+          <option value="Semester5">Semester 5</option>
+          <option value="Semester6">Semester 6</option>
+          <option value="Semester7">Semester 7</option>
+          <option value="Semester8">Semester 8</option>
+        </select>
+      </div>
 
-      <select id="exam" onchange="updateCourses()">
-        <option value="">-- Select Exam Type --</option>
-        <option value="Mid">Mid</option>
-        <option value="Final">Final</option>
-      </select>
+      <div class="select-wrapper">
+        <select id="exam" onchange="updateCourses()">
+          <option value="">-- Select Exam Type --</option>
+          <option value="Mid">Mid Term</option>
+          <option value="Final">Final Exam</option>
+        </select>
+      </div>
 
-      <select id="filetype" onchange="updateCourses()">
-        <option value="">-- Select File Type --</option>
-        <option value="Notes">Notes</option>
-        <option value="CourseMaterials">Course Materials</option>
-        <option value="PreviousQuestions">Previous Questions</option>
-      </select>
+      <div class="select-wrapper">
+        <select id="filetype" onchange="updateCourses()">
+          <option value="">-- Select File Type --</option>
+          <option value="Notes">📝 Notes</option>
+          <option value="CourseMaterials">📚 Course Materials</option>
+          <option value="PreviousQuestions">❓ Previous Questions</option>
+        </select>
+      </div>
 
-      <select id="course">
-        <option value="">-- Select Course --</option>
-      </select>
+      <div class="select-wrapper">
+        <select id="course">
+          <option value="">-- Select Course --</option>
+        </select>
+      </div>
     </div>
 
-    <div class="action-buttons">
-      <button onclick="fetchFiles()">Search</button>
+    <div class="button-group">
+      <button class="btn-primary" onclick="fetchFiles()">
+        <span id="searchText">Search Resources</span>
+      </button>
     </div>
 
-    <div id="files"><h3>Files:</h3></div>
+    <div id="files">
+      <h3>Available Files</h3>
+      <p style="color: var(--text-secondary); font-style: italic;">Select your preferences above to view available resources</p>
+    </div>
 
-    <div class="action-buttons" id="telegramSection" style="display: none;">
-      <button onclick="selectAllFiles()">Select All Files</button>
-      <button onclick="sendSelectedToTelegram()">Get it on Telegram</button>
+    <div class="button-group" id="telegramSection" style="display: none;">
+      <button class="btn-secondary" onclick="selectAllFiles()">Select All Files</button>
+      <button class="btn-accent" onclick="sendSelectedToTelegram()">
+        <span id="telegramText">📱 Get on Telegram</span>
+      </button>
     </div>
   </div>
 
   <script>
+    // Theme Management using Polymorphism
+    class Theme {
+      apply() {
+        throw new Error("apply() method must be implemented");
+      }
+      
+      getIcon() {
+        throw new Error("getIcon() method must be implemented");
+      }
+    }
+
+    class LightTheme extends Theme {
+      apply() {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      }
+      
+      getIcon() {
+        return '🌙';
+      }
+    }
+
+    class DarkTheme extends Theme {
+      apply() {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      
+      getIcon() {
+        return '☀️';
+      }
+    }
+
+    class ThemeManager {
+      constructor() {
+        this.lightTheme = new LightTheme();
+        this.darkTheme = new DarkTheme();
+        this.currentTheme = this.lightTheme;
+        this.init();
+      }
+
+      init() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          this.currentTheme = this.darkTheme;
+        } else {
+          this.currentTheme = this.lightTheme;
+        }
+        this.currentTheme.apply();
+        this.updateIcon();
+      }
+
+      toggle() {
+        this.currentTheme = this.currentTheme instanceof LightTheme ? 
+          this.darkTheme : this.lightTheme;
+        this.currentTheme.apply();
+        this.updateIcon();
+        
+        // Add smooth transition effect
+        document.body.style.transition = 'all 0.3s ease';
+        setTimeout(() => {
+          document.body.style.transition = '';
+        }, 300);
+      }
+
+      updateIcon() {
+        const icon = document.getElementById('themeIcon');
+        icon.textContent = this.currentTheme.getIcon();
+        
+        // Add pulse animation
+        icon.classList.add('pulse');
+        setTimeout(() => icon.classList.remove('pulse'), 2000);
+      }
+    }
+
+    // Initialize theme manager
+    const themeManager = new ThemeManager();
+
+    // Original functionality preserved
     const GITHUB_USERNAME = "11UCRES";
     const REPO_NAME = "cse";
 
@@ -145,35 +568,42 @@
       const exam = document.getElementById("exam").value;
       const filetype = document.getElementById("filetype").value;
       const courseSelect = document.getElementById("course");
-      courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+      
+      // Add loading animation
+      courseSelect.innerHTML = '<option value="">🔄 Loading courses...</option>';
 
-      if (!semester || !exam || !filetype) return;
+      if (!semester || !exam || !filetype) {
+        courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
+        return;
+      }
 
       if (filetype === "PreviousQuestions") {
         const opt = document.createElement("option");
         opt.value = "PreviousQuestions";
-        opt.textContent = "Previous Questions";
+        opt.textContent = "❓ Previous Questions";
+        courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
         courseSelect.appendChild(opt);
         return;
       }
 
-      // For Notes and CourseMaterials
       const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/${exam}`;
       try {
         const res = await fetch(apiUrl);
         if (!res.ok) throw new Error("Could not fetch course list.");
         const data = await res.json();
 
+        courseSelect.innerHTML = '<option value="">-- Select Course --</option>';
         data.forEach(item => {
           if (item.type === "dir") {
             const opt = document.createElement("option");
             opt.value = item.name;
-            opt.textContent = item.name;
+            opt.textContent = `📖 ${item.name}`;
             courseSelect.appendChild(opt);
           }
         });
       } catch (err) {
         console.error("Error loading course folders:", err);
+        courseSelect.innerHTML = '<option value="">❌ Error loading courses</option>';
       }
     }
 
@@ -184,11 +614,17 @@
       const filetype = document.getElementById("filetype").value;
       const filesDiv = document.getElementById("files");
       const telegramDiv = document.getElementById("telegramSection");
-      filesDiv.innerHTML = "<h3>Files:</h3>";
+      const searchBtn = document.getElementById("searchText");
+      
+      // Show loading state
+      searchBtn.innerHTML = '<span class="loading"></span> Searching...';
+      filesDiv.innerHTML = "<h3>Available Files</h3><p style='color: var(--text-secondary);'>🔍 Searching for resources...</p>";
       telegramDiv.style.display = "none";
 
       if (!semester || !exam || !course || !filetype) {
-        alert("Please select all fields.");
+        alert("Please select all fields to continue.");
+        searchBtn.textContent = "Search Resources";
+        filesDiv.innerHTML = "<h3>Available Files</h3><p style='color: var(--text-secondary); font-style: italic;'>⚠️ Please select all preferences above</p>";
         return;
       }
 
@@ -206,50 +642,75 @@
 
         if (!Array.isArray(files)) throw new Error("No files found.");
 
+        filesDiv.innerHTML = "<h3>Available Files</h3>";
+        let fileCount = 0;
+
         files.forEach(file => {
           if (file.type === "file") {
             const label = document.createElement("label");
+            label.className = "fade-in";
             const input = document.createElement("input");
             input.type = "checkbox";
             input.value = file.download_url;
             label.appendChild(input);
-            label.appendChild(document.createTextNode(" " + file.name));
+            label.appendChild(document.createTextNode(` 📄 ${file.name}`));
             filesDiv.appendChild(label);
+            fileCount++;
           }
         });
 
-        if (files.length > 0) {
-          telegramDiv.style.display = "flex";
+        if (fileCount > 0) {
+          telegramDiv.style.display = "block";
+          telegramDiv.classList.add("fade-in");
+          filesDiv.innerHTML += `<p style="color: var(--accent-color); font-weight: 600; margin-top: 1rem;">✅ Found ${fileCount} file(s)</p>`;
+        } else {
+          filesDiv.innerHTML += "<p style='color: var(--text-secondary);'>📭 No files found for the selected combination.</p>";
         }
 
       } catch (err) {
-        filesDiv.innerHTML += "<p>No files found for the selected combination.</p>";
+        filesDiv.innerHTML += "<p style='color: #ef4444;'>❌ No files found for the selected combination.</p>";
         console.error(err);
       }
+
+      searchBtn.textContent = "Search Resources";
     }
 
     function selectAllFiles() {
-      document.querySelectorAll('#files input[type="checkbox"]').forEach(cb => cb.checked = true);
+      const checkboxes = document.querySelectorAll('#files input[type="checkbox"]');
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      
+      checkboxes.forEach(cb => {
+        cb.checked = !allChecked;
+        // Add visual feedback
+        cb.closest('label').style.transform = cb.checked ? 'scale(1.02)' : 'scale(1)';
+      });
     }
 
     async function sendSelectedToTelegram() {
       const selected = Array.from(document.querySelectorAll('#files input[type="checkbox"]:checked'));
+      const telegramBtn = document.getElementById("telegramText");
+      
       if (selected.length === 0) {
-        alert("Please select at least one file.");
+        alert("Please select at least one file to send.");
         return;
       }
 
+      telegramBtn.innerHTML = '<span class="loading"></span> Sending...';
+      
       const user_id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
       const botToken = "7864007481:AAGxgH0CVpZD9Dp0Yc4v91LqNcZTEdoRwak";
 
+      let successCount = 0;
+
       for (const checkbox of selected) {
         const fileUrl = checkbox.value;
+        const fileName = checkbox.nextSibling.textContent.trim();
 
         const sendUrl = `https://api.telegram.org/bot${botToken}/sendDocument`;
         const payload = {
           chat_id: user_id,
           document: fileUrl,
-          caption: "Requested file from web app"
+          caption: `📚 ${fileName}\n\nRequested from University Resource Finder`
         };
 
         try {
@@ -262,16 +723,28 @@
           });
 
           if (!res.ok) throw new Error("Failed to send file");
+          successCount++;
 
         } catch (err) {
           console.error("Error sending file to Telegram:", err);
-          alert("Error sending some files.");
         }
       }
 
-      alert("Files sent to your Telegram!");
+      telegramBtn.textContent = "📱 Get on Telegram";
+      
+      if (successCount === selected.length) {
+        alert(`🎉 All ${successCount} files sent to your Telegram successfully!`);
+      } else {
+        alert(`⚠️ ${successCount} out of ${selected.length} files sent successfully.`);
+      }
     }
-  </script>
 
+    // Add smooth scroll behavior
+    document.querySelectorAll('select, button').forEach(element => {
+      element.addEventListener('focus', () => {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+  </script>
 </body>
 </html>
