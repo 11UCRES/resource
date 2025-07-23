@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniResource - Telegram Mini App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UniResource - Telegram Mini App</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
         :root {
             --primary: #2c3e50;
             --secondary: #3498db;
@@ -701,489 +702,458 @@
             }
         }
     </style>
-</head>
+<script src="https://telegram.org/js/telegram-web-app.js"></script></head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i>
-                <h1>Uni<span>Resource</span></h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="active">Home</a></li>
-                    <li><a href="#semesters">Semesters</a></li>
-                    <li><a href="#courses">Courses</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="auth-buttons">
-                <button class="btn btn-telegram" onclick="openTelegramApp()">
-                    <i class="fab fa-telegram"></i> Launch in Telegram
+<!-- Header -->
+<header>
+<div class="container header-container">
+<div class="logo">
+<i class="fas fa-graduation-cap"></i>
+<h1>Uni<span>Resource</span></h1>
+</div>
+<nav>
+<ul>
+<li><a class="active" href="#">Home</a></li>
+<li><a href="#semesters">Semesters</a></li>
+<li><a href="#courses">Courses</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+<div class="auth-buttons">
+<button class="btn btn-telegram" onclick="openTelegramApp()">
+<i class="fab fa-telegram"></i> Launch in Telegram
                 </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container hero-content">
-            <h2>University Resource Portal</h2>
-            <p>Access course materials, previous exam questions, and subject PDFs directly from our Telegram channel</p>
-            
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search by course code, file name, or exam type...">
-            </div>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <h3>1200+</h3>
-                    <p>Resources</p>
-                </div>
-                <div class="stat-item">
-                    <h3>8</h3>
-                    <p>Semesters</p>
-                </div>
-                <div class="stat-item">
-                    <h3>48</h3>
-                    <p>Courses</p>
-                </div>
-                <div class="stat-item">
-                    <h3>24/7</h3>
-                    <p>Access</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Integration Section -->
-    <section class="container">
-        <div class="integration">
-            <div class="integration-box telegram">
-                <i class="fab fa-telegram"></i>
-                <h3>Telegram Integration</h3>
-                <p>All files are stored in a private Telegram group. When you download, files are forwarded directly to your Telegram account.</p>
-                <button class="btn btn-telegram" style="margin-top: 15px;" onclick="openTelegramApp()">
-                    <i class="fab fa-telegram"></i> Open in Telegram
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="hero">
+<div class="container hero-content">
+<h2>University Resource Portal</h2>
+<p>Access course materials, previous exam questions, and subject PDFs directly from our Telegram channel</p>
+<div class="search-container">
+<i class="fas fa-search"></i>
+<input id="searchInput" placeholder="Search by course code, file name, or exam type..." type="text"/>
+</div>
+<div class="stats">
+<div class="stat-item">
+<h3>1200+</h3>
+<p>Resources</p>
+</div>
+<div class="stat-item">
+<h3>8</h3>
+<p>Semesters</p>
+</div>
+<div class="stat-item">
+<h3>48</h3>
+<p>Courses</p>
+</div>
+<div class="stat-item">
+<h3>24/7</h3>
+<p>Access</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Integration Section -->
+<section class="container">
+<div class="integration">
+<div class="integration-box telegram">
+<i class="fab fa-telegram"></i>
+<h3>Telegram Integration</h3>
+<p>All files are stored in a private Telegram group. When you download, files are forwarded directly to your Telegram account.</p>
+<button class="btn btn-telegram" onclick="openTelegramApp()" style="margin-top: 15px;">
+<i class="fab fa-telegram"></i> Open in Telegram
                 </button>
-            </div>
-            
-            <div class="integration-box github">
-                <i class="fab fa-github"></i>
-                <h3>GitHub Pages</h3>
-                <p>This portal is hosted on GitHub Pages for free. The code is available for customization and improvement.</p>
-                <button class="btn btn-github" style="margin-top: 15px;" onclick="window.open('https://github.com', '_blank')">
-                    <i class="fab fa-github"></i> View on GitHub
+</div>
+<div class="integration-box github">
+<i class="fab fa-github"></i>
+<h3>GitHub Pages</h3>
+<p>This portal is hosted on GitHub Pages for free. The code is available for customization and improvement.</p>
+<button class="btn btn-github" onclick="window.open('https://github.com', '_blank')" style="margin-top: 15px;">
+<i class="fab fa-github"></i> View on GitHub
                 </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Semester Navigation -->
-    <section class="semester-nav" id="semesters">
-        <div class="container">
-            <div class="semester-tabs">
-                <div class="semester-tab active" onclick="showSemester(1)">1st Semester</div>
-                <div class="semester-tab" onclick="showSemester(2)">2nd Semester</div>
-                <div class="semester-tab" onclick="showSemester(3)">3rd Semester</div>
-                <div class="semester-tab" onclick="showSemester(4)">4th Semester</div>
-                <div class="semester-tab" onclick="showSemester(5)">5th Semester</div>
-                <div class="semester-tab" onclick="showSemester(6)">6th Semester</div>
-                <div class="semester-tab" onclick="showSemester(7)">7th Semester</div>
-                <div class="semester-tab" onclick="showSemester(8)">8th Semester</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Semester Content -->
-    <section class="semester-content" id="courses">
-        <div class="container">
-            <!-- Semester 1 -->
-            <div id="semester1" class="semester-section">
-                <div class="semester-header">
-                    <h2>1st Semester Resources</h2>
-                    <p>Access course materials, previous questions, and lecture notes</p>
-                </div>
-                
-                <div class="courses-container">
-                    <!-- Course 1 -->
-                    <div class="course-card">
-                        <div class="course-header" style="background-color: var(--semester1);">
+</div>
+</div>
+</section>
+<!-- Semester Navigation -->
+<section class="semester-nav" id="semesters">
+<div class="container">
+<div class="semester-tabs">
+<div class="semester-tab active" onclick="showSemester(1)">1st Semester</div>
+<div class="semester-tab" onclick="showSemester(2)">2nd Semester</div>
+<div class="semester-tab" onclick="showSemester(3)">3rd Semester</div>
+<div class="semester-tab" onclick="showSemester(4)">4th Semester</div>
+<div class="semester-tab" onclick="showSemester(5)">5th Semester</div>
+<div class="semester-tab" onclick="showSemester(6)">6th Semester</div>
+<div class="semester-tab" onclick="showSemester(7)">7th Semester</div>
+<div class="semester-tab" onclick="showSemester(8)">8th Semester</div>
+</div>
+</div>
+</section>
+<!-- Semester Content -->
+<section class="semester-content" id="courses">
+<div class="container">
+<!-- Semester 1 -->
+<div class="semester-section" id="semester1">
+<div class="semester-header">
+<h2>1st Semester Resources</h2>
+<p>Access course materials, previous questions, and lecture notes</p>
+</div>
+<div class="courses-container">
+<!-- Course 1 -->
+<div class="course-card">
+<div class="course-header" style="background-color: var(--semester1);">
                             CSE101: Introduction to Programming
                         </div>
-                        <div class="course-content">
-                            <div class="exam-section">
-                                <h4><i class="fas fa-file-alt"></i> Mid Term Resources</h4>
-                                <ul class="resources-list">
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Mid Term Question - 2023</h5>
-                                                <p>PDF - 1.2 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_101_1">
-                                            <i class="fas fa-download"></i> Get
+<div class="course-content">
+<div class="exam-section">
+<h4><i class="fas fa-file-alt"></i> Mid Term Resources</h4>
+<ul class="resources-list">
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Mid Term Question - 2023</h5>
+<p>PDF - 1.2 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_101_1">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Mid Term Solution</h5>
-                                                <p>PDF - 0.8 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_101_2">
-                                            <i class="fas fa-download"></i> Get
+</li>
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Mid Term Solution</h5>
+<p>PDF - 0.8 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_101_2">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div class="exam-section">
-                                <h4><i class="fas fa-file-alt"></i> Final Exam Resources</h4>
-                                <ul class="resources-list">
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Final Question - 2023</h5>
-                                                <p>PDF - 1.5 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_101_3">
-                                            <i class="fas fa-download"></i> Get
+</li>
+</ul>
+</div>
+<div class="exam-section">
+<h4><i class="fas fa-file-alt"></i> Final Exam Resources</h4>
+<ul class="resources-list">
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Final Question - 2023</h5>
+<p>PDF - 1.5 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_101_3">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Course Materials</h5>
-                                                <p>PDF - 3.2 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_101_4">
-                                            <i class="fas fa-download"></i> Get
+</li>
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Course Materials</h5>
+<p>PDF - 3.2 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_101_4">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Course 2 -->
-                    <div class="course-card">
-                        <div class="course-header" style="background-color: var(--semester1);">
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Course 2 -->
+<div class="course-card">
+<div class="course-header" style="background-color: var(--semester1);">
                             MAT101: Calculus I
                         </div>
-                        <div class="course-content">
-                            <div class="exam-section">
-                                <h4><i class="fas fa-file-alt"></i> Mid Term Resources</h4>
-                                <ul class="resources-list">
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Mid Term Question - 2023</h5>
-                                                <p>PDF - 1.1 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_102_1">
-                                            <i class="fas fa-download"></i> Get
+<div class="course-content">
+<div class="exam-section">
+<h4><i class="fas fa-file-alt"></i> Mid Term Resources</h4>
+<ul class="resources-list">
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Mid Term Question - 2023</h5>
+<p>PDF - 1.1 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_102_1">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Problem Set Solutions</h5>
-                                                <p>PDF - 2.4 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_102_2">
-                                            <i class="fas fa-download"></i> Get
+</li>
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Problem Set Solutions</h5>
+<p>PDF - 2.4 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_102_2">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div class="exam-section">
-                                <h4><i class="fas fa-file-alt"></i> Final Exam Resources</h4>
-                                <ul class="resources-list">
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Final Question - 2023</h5>
-                                                <p>PDF - 1.8 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_102_3">
-                                            <i class="fas fa-download"></i> Get
+</li>
+</ul>
+</div>
+<div class="exam-section">
+<h4><i class="fas fa-file-alt"></i> Final Exam Resources</h4>
+<ul class="resources-list">
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Final Question - 2023</h5>
+<p>PDF - 1.8 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_102_3">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Formula Sheet</h5>
-                                                <p>PDF - 0.5 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_102_4">
-                                            <i class="fas fa-download"></i> Get
+</li>
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Formula Sheet</h5>
+<p>PDF - 0.5 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_102_4">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Course 3 -->
-                    <div class="course-card">
-                        <div class="course-header" style="background-color: var(--semester1);">
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Course 3 -->
+<div class="course-card">
+<div class="course-header" style="background-color: var(--semester1);">
                             PHY101: Physics I
                         </div>
-                        <div class="course-content">
-                            <div class="exam-section">
-                                <h4><i class="fas fa-file-alt"></i> Mid Term Resources</h4>
-                                <ul class="resources-list">
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Mid Term Question - 2023</h5>
-                                                <p>PDF - 1.3 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_103_1">
-                                            <i class="fas fa-download"></i> Get
+<div class="course-content">
+<div class="exam-section">
+<h4><i class="fas fa-file-alt"></i> Mid Term Resources</h4>
+<ul class="resources-list">
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Mid Term Question - 2023</h5>
+<p>PDF - 1.3 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_103_1">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Lab Manual</h5>
-                                                <p>PDF - 2.1 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_103_2">
-                                            <i class="fas fa-download"></i> Get
+</li>
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Lab Manual</h5>
+<p>PDF - 2.1 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_103_2">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div class="exam-section">
-                                <h4><i class="fas fa-file-alt"></i> Final Exam Resources</h4>
-                                <ul class="resources-list">
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Final Question - 2023</h5>
-                                                <p>PDF - 1.7 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_103_3">
-                                            <i class="fas fa-download"></i> Get
+</li>
+</ul>
+</div>
+<div class="exam-section">
+<h4><i class="fas fa-file-alt"></i> Final Exam Resources</h4>
+<ul class="resources-list">
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Final Question - 2023</h5>
+<p>PDF - 1.7 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_103_3">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                    <li>
-                                        <div class="file-info">
-                                            <div class="file-icon">
-                                                <i class="fas fa-file-pdf"></i>
-                                            </div>
-                                            <div class="file-details">
-                                                <h5>Course Summary</h5>
-                                                <p>PDF - 1.2 MB</p>
-                                            </div>
-                                        </div>
-                                        <button class="download-btn" data-message-id="msg_103_4">
-                                            <i class="fas fa-download"></i> Get
+</li>
+<li>
+<div class="file-info">
+<div class="file-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+<div class="file-details">
+<h5>Course Summary</h5>
+<p>PDF - 1.2 MB</p>
+</div>
+</div>
+<button class="download-btn" data-message-id="msg_103_4">
+<i class="fas fa-download"></i> Get
                                         </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Other semesters would be structured similarly -->
-            <!-- Due to space constraints, only Semester 1 is shown -->
-            <!-- The other semesters would follow the same pattern with different course names -->
-            
-        </div>
-    </section>
-
-    <!-- Admin Section -->
-    <section class="admin-section" id="contact">
-        <div class="container admin-container">
-            <div class="admin-content">
-                <h2>Admin Portal</h2>
-                <p>University staff can upload resources directly to our Telegram channel. All uploads are automatically organized and made available to students through this portal.</p>
-                <p>Contact the admin to request access to the upload portal or report any issues with resources.</p>
-                <div style="display: flex; gap: 15px; margin-top: 25px;">
-                    <button class="btn btn-primary" onclick="openAdminModal()">
-                        <i class="fas fa-lock"></i> Admin Login
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Other semesters would be structured similarly -->
+<!-- Due to space constraints, only Semester 1 is shown -->
+<!-- The other semesters would follow the same pattern with different course names -->
+</div>
+</section>
+<!-- Admin Section -->
+<section class="admin-section" id="contact">
+<div class="container admin-container">
+<div class="admin-content">
+<h2>Admin Portal</h2>
+<p>University staff can upload resources directly to our Telegram channel. All uploads are automatically organized and made available to students through this portal.</p>
+<p>Contact the admin to request access to the upload portal or report any issues with resources.</p>
+<div style="display: flex; gap: 15px; margin-top: 25px;">
+<button class="btn btn-primary" onclick="openAdminModal()">
+<i class="fas fa-lock"></i> Admin Login
                     </button>
-                    <button class="btn btn-outline" onclick="openContactModal()">
-                        <i class="fas fa-envelope"></i> Contact Admin
+<button class="btn btn-outline" onclick="openContactModal()">
+<i class="fas fa-envelope"></i> Contact Admin
                     </button>
-                </div>
-            </div>
-            <div class="admin-image">
-                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Admin Dashboard">
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-column">
-                    <h3>UniResource</h3>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Your academic resource portal for university students.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#semesters">Semesters</a></li>
-                        <li><a href="#courses">Courses</a></li>
-                        <li><a href="#contact">Contact Admin</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Previous Questions</a></li>
-                        <li><a href="#">Subject PDFs</a></li>
-                        <li><a href="#">Lecture Notes</a></li>
-                        <li><a href="#">Slide Presentations</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Contact Admin</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-envelope"></i> admin@uniresource.edu</li>
-                        <li><i class="fab fa-telegram"></i> @UniResourceAdmin</li>
-                        <li><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM, Mon-Fri</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 UniResource Portal. Hosted on GitHub Pages. Telegram Mini App Integration.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Admin Login</h3>
-                <button class="close-modal" onclick="closeModal('loginModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="loginEmail">Telegram Username</label>
-                    <input type="text" id="loginEmail" placeholder="@username">
-                </div>
-                
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter your password">
-                </div>
-                
-                <button class="btn btn-primary" style="width: 100%;">Login to Admin Portal</button>
-                
-                <p style="text-align: center; margin-top: 20px;">
-                    <a href="#" style="color: var(--secondary);">Forgot Password?</a>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Contact Modal -->
-    <div id="contactModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Contact Admin</h3>
-                <button class="close-modal" onclick="closeModal('contactModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="contactName">Your Name</label>
-                    <input type="text" id="contactName" placeholder="Enter your name">
-                </div>
-                
-                <div class="form-group">
-                    <label for="contactEmail">Email or Telegram</label>
-                    <input type="text" id="contactEmail" placeholder="Email or Telegram username">
-                </div>
-                
-                <div class="form-group">
-                    <label for="contactSubject">Subject</label>
-                    <select id="contactSubject">
-                        <option>Resource Request</option>
-                        <option>Report Issue</option>
-                        <option>Upload Access Request</option>
-                        <option>General Inquiry</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="contactMessage">Message</label>
-                    <textarea id="contactMessage" placeholder="Enter your message" rows="4"></textarea>
-                </div>
-                
-                <button class="btn btn-primary" style="width: 100%;">Send Message</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
+</div>
+</div>
+<div class="admin-image">
+<img alt="Admin Dashboard" src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80"/>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer>
+<div class="container">
+<div class="footer-container">
+<div class="footer-column">
+<h3>UniResource</h3>
+<p style="margin-bottom: 15px; font-size: 14px;">Your academic resource portal for university students.</p>
+<div class="social-links">
+<a href="#"><i class="fab fa-telegram"></i></a>
+<a href="#"><i class="fab fa-github"></i></a>
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+<a href="#"><i class="fab fa-twitter"></i></a>
+</div>
+</div>
+<div class="footer-column">
+<h3>Quick Links</h3>
+<ul class="footer-links">
+<li><a href="#">Home</a></li>
+<li><a href="#semesters">Semesters</a></li>
+<li><a href="#courses">Courses</a></li>
+<li><a href="#contact">Contact Admin</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Resources</h3>
+<ul class="footer-links">
+<li><a href="#">Previous Questions</a></li>
+<li><a href="#">Subject PDFs</a></li>
+<li><a href="#">Lecture Notes</a></li>
+<li><a href="#">Slide Presentations</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>Contact Admin</h3>
+<ul class="footer-links">
+<li><i class="fas fa-envelope"></i> admin@uniresource.edu</li>
+<li><i class="fab fa-telegram"></i> @UniResourceAdmin</li>
+<li><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM, Mon-Fri</li>
+</ul>
+</div>
+</div>
+<div class="copyright">
+<p>© 2023 UniResource Portal. Hosted on GitHub Pages. Telegram Mini App Integration.</p>
+</div>
+</div>
+</footer>
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+<div class="modal-content">
+<div class="modal-header">
+<h3>Admin Login</h3>
+<button class="close-modal" onclick="closeModal('loginModal')">×</button>
+</div>
+<div class="modal-body">
+<div class="form-group">
+<label for="loginEmail">Telegram Username</label>
+<input id="loginEmail" placeholder="@username" type="text"/>
+</div>
+<div class="form-group">
+<label for="loginPassword">Password</label>
+<input id="loginPassword" placeholder="Enter your password" type="password"/>
+</div>
+<button class="btn btn-primary" style="width: 100%;">Login to Admin Portal</button>
+<p style="text-align: center; margin-top: 20px;">
+<a href="#" style="color: var(--secondary);">Forgot Password?</a>
+</p>
+</div>
+</div>
+</div>
+<!-- Contact Modal -->
+<div class="modal" id="contactModal">
+<div class="modal-content">
+<div class="modal-header">
+<h3>Contact Admin</h3>
+<button class="close-modal" onclick="closeModal('contactModal')">×</button>
+</div>
+<div class="modal-body">
+<div class="form-group">
+<label for="contactName">Your Name</label>
+<input id="contactName" placeholder="Enter your name" type="text"/>
+</div>
+<div class="form-group">
+<label for="contactEmail">Email or Telegram</label>
+<input id="contactEmail" placeholder="Email or Telegram username" type="text"/>
+</div>
+<div class="form-group">
+<label for="contactSubject">Subject</label>
+<select id="contactSubject">
+<option>Resource Request</option>
+<option>Report Issue</option>
+<option>Upload Access Request</option>
+<option>General Inquiry</option>
+</select>
+</div>
+<div class="form-group">
+<label for="contactMessage">Message</label>
+<textarea id="contactMessage" placeholder="Enter your message" rows="4"></textarea>
+</div>
+<button class="btn btn-primary" style="width: 100%;">Send Message</button>
+</div>
+</div>
+</div>
+<script>
         // Semester navigation
         function showSemester(semesterNum) {
             // Hide all semester sections
