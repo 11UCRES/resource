@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>University Resources</title>
+  <title>University Resource Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
@@ -11,6 +11,7 @@
       --primary-hover: #4f46e5;
       --secondary-color: #f3f4f6;
       --accent-color: #10b981;
+      --error-color: #ef4444;
       --text-primary: #1f2937;
       --text-secondary: #6b7280;
       --bg-primary: #ffffff;
@@ -28,6 +29,7 @@
       --primary-hover: #6366f1;
       --secondary-color: #374151;
       --accent-color: #34d399;
+      --error-color: #f87171;
       --text-primary: #f9fafb;
       --text-secondary: #d1d5db;
       --bg-primary: #1f2937;
@@ -76,6 +78,8 @@
       color: var(--text-secondary);
       font-size: 1.1rem;
       font-weight: 400;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .theme-toggle {
@@ -205,6 +209,7 @@
       gap: 1rem;
       margin: 2rem 0;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
     button {
@@ -221,6 +226,10 @@
       overflow: hidden;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
     .btn-primary {
@@ -255,6 +264,11 @@
     .btn-accent:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-heavy);
+    }
+
+    .btn-error {
+      background: linear-gradient(135deg, var(--error-color), #dc2626);
+      color: white;
     }
 
     button::before {
@@ -298,31 +312,63 @@
       content: '📁';
     }
 
-    #files label {
+    #fileList {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    #fileList::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #fileList::-webkit-scrollbar-track {
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+    }
+
+    #fileList::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    .file-item {
       display: flex;
       align-items: center;
       margin: 0.75rem 0;
       padding: 1rem;
       background: var(--bg-primary);
       border-radius: 10px;
-      cursor: pointer;
       transition: var(--transition);
       border: 1px solid var(--border-color);
       font-weight: 500;
     }
 
-    #files label:hover {
+    .file-item:hover {
       background: var(--bg-tertiary);
       transform: translateX(5px);
       box-shadow: var(--shadow-light);
     }
 
-    #files input[type="checkbox"] {
+    .file-icon {
+      margin-right: 12px;
+      font-size: 1.2rem;
+    }
+
+    input[type="checkbox"] {
       margin-right: 1rem;
       width: 20px;
       height: 20px;
       accent-color: var(--primary-color);
       cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .file-name {
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     #telegramSection {
@@ -331,6 +377,7 @@
       border-radius: 16px;
       border: 1px solid var(--border-color);
       margin-top: 2rem;
+      display: none;
     }
 
     .loading {
@@ -365,6 +412,48 @@
       50% { opacity: 0.7; }
     }
 
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow-heavy);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .toast.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--error-color);
+    }
+
+    .file-type-indicator {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      background: var(--bg-tertiary);
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 8px;
+      font-weight: 500;
+    }
+
     @media (max-width: 768px) {
       body {
         padding: 10px;
@@ -374,8 +463,19 @@
         padding: 1.5rem;
       }
 
+      .header {
+        padding-top: 40px;
+      }
+
       .header h2 {
         font-size: 2rem;
+      }
+
+      .theme-toggle {
+        position: absolute;
+        top: 10px;
+        right: 50%;
+        transform: translateX(50%);
       }
 
       .selectors {
@@ -388,11 +488,15 @@
 
       button {
         min-width: auto;
+        width: 100%;
       }
 
-      .theme-toggle {
-        position: static;
-        margin: 1rem auto 0;
+      #files {
+        padding: 1rem;
+      }
+
+      .file-item {
+        padding: 0.8rem;
       }
     }
 
@@ -403,6 +507,38 @@
 
       .container {
         padding: 1rem;
+      }
+
+      .section-title {
+        font-size: 1.3rem;
+      }
+
+      select {
+        padding: 0.8rem 2rem 0.8rem 0.8rem;
+        font-size: 0.95rem;
+      }
+
+      button {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .header h2 {
+        font-size: 1.6rem;
+      }
+
+      .header p {
+        font-size: 0.95rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+
+      .file-name {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -466,16 +602,23 @@
 
     <div id="files">
       <h3>Available Files</h3>
-      <p style="color: var(--text-secondary); font-style: italic;">Select your preferences above to view available resources</p>
+      <div id="fileList">
+        <p style="color: var(--text-secondary); font-style: italic;">Select your preferences above to view available resources</p>
+      </div>
     </div>
 
-    <div class="button-group" id="telegramSection" style="display: none;">
-      <button class="btn-secondary" onclick="selectAllFiles()">Select All Files</button>
+    <div class="button-group" id="telegramSection">
+      <button class="btn-secondary" onclick="selectAllFiles()">
+        <span class="theme-icon">✓</span> Select All Files
+      </button>
       <button class="btn-accent" onclick="sendSelectedToTelegram()">
-        <span id="telegramText">📱 Get on Telegram</span>
+        <span class="theme-icon">📱</span>
+        <span id="telegramText">Get on Telegram</span>
       </button>
     </div>
   </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
     // Theme Management using Polymorphism
@@ -556,12 +699,47 @@
     // Initialize theme manager
     const themeManager = new ThemeManager();
 
+    // File type icons mapping
+    const FILE_ICONS = {
+      'pdf': '📄',
+      'doc': '📝',
+      'docx': '📝',
+      'ppt': '📊',
+      'pptx': '📊',
+      'xls': '📈',
+      'xlsx': '📈',
+      'jpg': '🖼️',
+      'jpeg': '🖼️',
+      'png': '🖼️',
+      'gif': '🖼️',
+      'txt': '📃',
+      'zip': '📦',
+      'rar': '📦',
+      'mp3': '🎵',
+      'mp4': '🎬',
+      'mov': '🎬',
+      'avi': '🎬',
+      'default': '📁'
+    };
+
     // Original functionality preserved
     const GITHUB_USERNAME = "11UCRES";
     const REPO_NAME = "cse";
 
     const tg = window.Telegram.WebApp;
     tg.expand();
+
+    // Toast notification function
+    function showToast(message, type = "success") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.classList.add("show");
+      
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
 
     async function updateCourses() {
       const semester = document.getElementById("semester").value;
@@ -607,24 +785,34 @@
       }
     }
 
+    function getFileIcon(filename) {
+      const extension = filename.split('.').pop().toLowerCase();
+      return FILE_ICONS[extension] || FILE_ICONS['default'];
+    }
+
+    function getFileType(filename) {
+      const extension = filename.split('.').pop().toUpperCase();
+      return extension || 'File';
+    }
+
     async function fetchFiles() {
       const semester = document.getElementById("semester").value;
       const exam = document.getElementById("exam").value;
       const course = document.getElementById("course").value;
       const filetype = document.getElementById("filetype").value;
-      const filesDiv = document.getElementById("files");
+      const fileListDiv = document.getElementById("fileList");
       const telegramDiv = document.getElementById("telegramSection");
       const searchBtn = document.getElementById("searchText");
       
       // Show loading state
       searchBtn.innerHTML = '<span class="loading"></span> Searching...';
-      filesDiv.innerHTML = "<h3>Available Files</h3><p style='color: var(--text-secondary);'>🔍 Searching for resources...</p>";
+      fileListDiv.innerHTML = '<p style="color: var(--text-secondary);">🔍 Searching for resources...</p>';
       telegramDiv.style.display = "none";
 
       if (!semester || !exam || !course || !filetype) {
-        alert("Please select all fields to continue.");
+        showToast("Please select all fields to continue", "error");
         searchBtn.textContent = "Search Resources";
-        filesDiv.innerHTML = "<h3>Available Files</h3><p style='color: var(--text-secondary); font-style: italic;'>⚠️ Please select all preferences above</p>";
+        fileListDiv.innerHTML = '<p style="color: var(--text-secondary); font-style: italic;">⚠️ Please select all preferences above</p>';
         return;
       }
 
@@ -642,33 +830,51 @@
 
         if (!Array.isArray(files)) throw new Error("No files found.");
 
-        filesDiv.innerHTML = "<h3>Available Files</h3>";
+        fileListDiv.innerHTML = "";
         let fileCount = 0;
 
         files.forEach(file => {
           if (file.type === "file") {
-            const label = document.createElement("label");
-            label.className = "fade-in";
-            const input = document.createElement("input");
-            input.type = "checkbox";
-            input.value = file.download_url;
-            label.appendChild(input);
-            label.appendChild(document.createTextNode(` 📄 ${file.name}`));
-            filesDiv.appendChild(label);
+            const fileItem = document.createElement("div");
+            fileItem.className = "file-item fade-in";
+            
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.value = file.download_url;
+            checkbox.dataset.name = file.name;
+            
+            const fileIcon = document.createElement("span");
+            fileIcon.className = "file-icon";
+            fileIcon.textContent = getFileIcon(file.name);
+            
+            const fileName = document.createElement("span");
+            fileName.className = "file-name";
+            fileName.textContent = file.name;
+            
+            const fileType = document.createElement("span");
+            fileType.className = "file-type-indicator";
+            fileType.textContent = getFileType(file.name);
+            
+            fileItem.appendChild(checkbox);
+            fileItem.appendChild(fileIcon);
+            fileItem.appendChild(fileName);
+            fileItem.appendChild(fileType);
+            
+            fileListDiv.appendChild(fileItem);
             fileCount++;
           }
         });
 
         if (fileCount > 0) {
-          telegramDiv.style.display = "block";
+          telegramDiv.style.display = "flex";
           telegramDiv.classList.add("fade-in");
-          filesDiv.innerHTML += `<p style="color: var(--accent-color); font-weight: 600; margin-top: 1rem;">✅ Found ${fileCount} file(s)</p>`;
+          fileListDiv.innerHTML += `<p style="color: var(--accent-color); font-weight: 600; margin-top: 1rem;">✅ Found ${fileCount} file(s)</p>`;
         } else {
-          filesDiv.innerHTML += "<p style='color: var(--text-secondary);'>📭 No files found for the selected combination.</p>";
+          fileListDiv.innerHTML += "<p style='color: var(--text-secondary);'>📭 No files found for the selected combination.</p>";
         }
 
       } catch (err) {
-        filesDiv.innerHTML += "<p style='color: #ef4444;'>❌ No files found for the selected combination.</p>";
+        fileListDiv.innerHTML += `<p style='color: var(--error-color);'>❌ ${err.message || "No files found for the selected combination."}</p>`;
         console.error(err);
       }
 
@@ -676,22 +882,26 @@
     }
 
     function selectAllFiles() {
-      const checkboxes = document.querySelectorAll('#files input[type="checkbox"]');
+      const checkboxes = document.querySelectorAll('#fileList input[type="checkbox"]');
       const allChecked = Array.from(checkboxes).every(cb => cb.checked);
       
       checkboxes.forEach(cb => {
         cb.checked = !allChecked;
         // Add visual feedback
-        cb.closest('label').style.transform = cb.checked ? 'scale(1.02)' : 'scale(1)';
+        cb.closest('.file-item').style.backgroundColor = cb.checked ? 
+          'var(--bg-tertiary)' : 
+          'var(--bg-primary)';
       });
+      
+      showToast(allChecked ? "All files deselected" : "All files selected");
     }
 
     async function sendSelectedToTelegram() {
-      const selected = Array.from(document.querySelectorAll('#files input[type="checkbox"]:checked'));
+      const selected = Array.from(document.querySelectorAll('#fileList input[type="checkbox"]:checked'));
       const telegramBtn = document.getElementById("telegramText");
       
       if (selected.length === 0) {
-        alert("Please select at least one file to send.");
+        showToast("Please select at least one file to send", "error");
         return;
       }
 
@@ -701,10 +911,11 @@
       const botToken = "7864007481:AAGxgH0CVpZD9Dp0Yc4v91LqNcZTEdoRwak";
 
       let successCount = 0;
+      let errorCount = 0;
 
       for (const checkbox of selected) {
         const fileUrl = checkbox.value;
-        const fileName = checkbox.nextSibling.textContent.trim();
+        const fileName = checkbox.dataset.name;
 
         const sendUrl = `https://api.telegram.org/bot${botToken}/sendDocument`;
         const payload = {
@@ -727,15 +938,16 @@
 
         } catch (err) {
           console.error("Error sending file to Telegram:", err);
+          errorCount++;
         }
       }
 
-      telegramBtn.textContent = "📱 Get on Telegram";
+      telegramBtn.textContent = "Get on Telegram";
       
-      if (successCount === selected.length) {
-        alert(`🎉 All ${successCount} files sent to your Telegram successfully!`);
+      if (errorCount === 0) {
+        showToast(`🎉 ${successCount} file(s) sent to your Telegram!`);
       } else {
-        alert(`⚠️ ${successCount} out of ${selected.length} files sent successfully.`);
+        showToast(`⚠️ ${successCount} sent, ${errorCount} failed`, "error");
       }
     }
 
