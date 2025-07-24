@@ -12,6 +12,7 @@
       --secondary-color: #f3f4f6;
       --accent-color: #10b981;
       --error-color: #ef4444;
+      --warning-color: #f59e0b;
       --text-primary: #1f2937;
       --text-secondary: #6b7280;
       --bg-primary: #ffffff;
@@ -30,6 +31,7 @@
       --secondary-color: #374151;
       --accent-color: #34d399;
       --error-color: #f87171;
+      --warning-color: #fbbf24;
       --text-primary: #f9fafb;
       --text-secondary: #d1d5db;
       --bg-primary: #1f2937;
@@ -61,6 +63,7 @@
       text-align: center;
       margin-bottom: 2rem;
       position: relative;
+      padding: 0 15px;
     }
 
     .header h2 {
@@ -353,6 +356,8 @@
     .file-icon {
       margin-right: 12px;
       font-size: 1.2rem;
+      min-width: 24px;
+      text-align: center;
     }
 
     input[type="checkbox"] {
@@ -369,6 +374,31 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .file-info {
+      display: flex;
+      flex-direction: column;
+      margin-left: 8px;
+    }
+
+    .file-type {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      background: var(--bg-tertiary);
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-top: 4px;
+    }
+
+    .file-size {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .warning {
+      color: var(--warning-color);
+      margin-left: 8px;
     }
 
     #telegramSection {
@@ -444,14 +474,8 @@
       border-left: 4px solid var(--error-color);
     }
 
-    .file-type-indicator {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      background: var(--bg-tertiary);
-      padding: 2px 8px;
-      border-radius: 12px;
-      margin-left: 8px;
-      font-weight: 500;
+    .toast.warning {
+      border-left: 4px solid var(--warning-color);
     }
 
     @media (max-width: 768px) {
@@ -497,6 +521,15 @@
 
       .file-item {
         padding: 0.8rem;
+        flex-wrap: wrap;
+      }
+
+      .file-info {
+        margin-left: 0;
+        margin-top: 8px;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
       }
     }
 
@@ -696,9 +729,6 @@
       }
     }
 
-    // Initialize theme manager
-    const themeManager = new ThemeManager();
-
     // File type icons mapping
     const FILE_ICONS = {
       'pdf': '📄',
@@ -708,13 +738,17 @@
       'pptx': '📊',
       'xls': '📈',
       'xlsx': '📈',
+      'html': '🌐',
+      'css': '🎨',
+      'js': '📜',
+      'txt': '📃',
+      'zip': '📦',
+      'rar': '📦',
+      '7z': '📦',
       'jpg': '🖼️',
       'jpeg': '🖼️',
       'png': '🖼️',
       'gif': '🖼️',
-      'txt': '📃',
-      'zip': '📦',
-      'rar': '📦',
       'mp3': '🎵',
       'mp4': '🎬',
       'mov': '🎬',
@@ -790,6 +824,12 @@
       return FILE_ICONS[extension] || FILE_ICONS['default'];
     }
 
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' bytes';
+      else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      else return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
     function getFileType(filename) {
       const extension = filename.split('.').pop().toUpperCase();
       return extension || 'File';
@@ -842,6 +882,7 @@
             checkbox.type = "checkbox";
             checkbox.value = file.download_url;
             checkbox.dataset.name = file.name;
+            checkbox.dataset.size = file.size;
             
             const fileIcon = document.createElement("span");
             fileIcon.className = "file-icon";
@@ -851,14 +892,32 @@
             fileName.className = "file-name";
             fileName.textContent = file.name;
             
+            const fileInfo = document.createElement("div");
+            fileInfo.className = "file-info";
+            
             const fileType = document.createElement("span");
-            fileType.className = "file-type-indicator";
+            fileType.className = "file-type";
             fileType.textContent = getFileType(file.name);
+            
+            const fileSize = document.createElement("span");
+            fileSize.className = "file-size";
+            fileSize.textContent = formatFileSize(file.size);
+            
+            // Add warning for large files
+            if (file.size > 20 * 1024 * 1024) {
+              const warning = document.createElement("span");
+              warning.className = "warning";
+              warning.textContent = "⚠️ Large file";
+              fileInfo.appendChild(warning);
+            }
+            
+            fileInfo.appendChild(fileType);
+            fileInfo.appendChild(fileSize);
             
             fileItem.appendChild(checkbox);
             fileItem.appendChild(fileIcon);
             fileItem.appendChild(fileName);
-            fileItem.appendChild(fileType);
+            fileItem.appendChild(fileInfo);
             
             fileListDiv.appendChild(fileItem);
             fileCount++;
@@ -912,10 +971,19 @@
 
       let successCount = 0;
       let errorCount = 0;
+      let largeFileCount = 0;
 
       for (const checkbox of selected) {
         const fileUrl = checkbox.value;
         const fileName = checkbox.dataset.name;
+        const fileSize = parseInt(checkbox.dataset.size);
+
+        // Skip files larger than 20MB
+        if (fileSize > 20 * 1024 * 1024) {
+          largeFileCount++;
+          errorCount++;
+          continue;
+        }
 
         const sendUrl = `https://api.telegram.org/bot${botToken}/sendDocument`;
         const payload = {
@@ -947,7 +1015,11 @@
       if (errorCount === 0) {
         showToast(`🎉 ${successCount} file(s) sent to your Telegram!`);
       } else {
-        showToast(`⚠️ ${successCount} sent, ${errorCount} failed`, "error");
+        let message = `⚠️ ${successCount} sent, ${errorCount} failed`;
+        if (largeFileCount > 0) {
+          message += ` (${largeFileCount} large files skipped)`;
+        }
+        showToast(message, "error");
       }
     }
 
