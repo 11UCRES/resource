@@ -860,7 +860,7 @@
       if (filetype === "PreviousQuestions") {
         apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/PreviousQuestions/${exam}`;
       } else {
-        apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/${exam}/${course}/${filetype}`;
+        apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${semester}/${exam}/${course}`;
       }
 
       try {
